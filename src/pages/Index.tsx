@@ -29,11 +29,8 @@ const Index = () => {
   const handleStartTool = (toolId: string) => {
     const tool = healthTools.find(t => t.id === toolId);
     if (tool) {
-      // Convert tool title to URL slug
-      const slug = tool.title.toLowerCase()
-        .replace(/[^\w\s]/g, '')
-        .replace(/\s+/g, '-');
-      window.open(`/${slug}`, '_blank');
+      setSelectedTool(tool);
+      setShowQuiz(true);
     }
   };
 
@@ -49,6 +46,11 @@ const Index = () => {
     setSelectedTool(null);
     setQuizScore(0);
     setQuizAnswers({});
+  };
+
+  const handleCloseQuiz = () => {
+    setShowQuiz(false);
+    setSelectedTool(null);
   };
 
   const stats = [
@@ -154,6 +156,23 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Modals */}
+      {selectedTool && showQuiz && (
+        <QuizModal
+          tool={selectedTool}
+          onComplete={handleQuizComplete}
+          onClose={handleCloseQuiz}
+        />
+      )}
+
+      {selectedTool && showResults && (
+        <ResultsModal
+          tool={selectedTool}
+          score={quizScore}
+          answers={quizAnswers}
+          onClose={handleCloseResults}
+        />
+      )}
     </div>
   );
 };
