@@ -8,17 +8,14 @@ import { HealthTool, Question, Option } from "@/data/tools";
 
 interface QuizModalProps {
   tool: HealthTool;
-  isOpen: boolean;
   onClose: () => void;
   onComplete: (score: number, answers: Record<string, string>) => void;
 }
 
-const QuizModal = ({ tool, isOpen, onClose, onComplete }: QuizModalProps) => {
+const QuizModal = ({ tool, onClose, onComplete }: QuizModalProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [selectedOption, setSelectedOption] = useState<string>("");
-
-  if (!isOpen) return null;
 
   const progress = ((currentQuestion + 1) / tool.questions.length) * 100;
   const question = tool.questions[currentQuestion];
@@ -46,7 +43,9 @@ const QuizModal = ({ tool, isOpen, onClose, onComplete }: QuizModalProps) => {
       onComplete(totalScore, newAnswers);
     } else {
       setCurrentQuestion(prev => prev + 1);
-      setSelectedOption("");
+      // Load previous answer for next question if going back
+      const nextQuestionAnswer = answers[tool.questions[currentQuestion + 1]?.id];
+      setSelectedOption(nextQuestionAnswer || "");
     }
   };
 
@@ -154,9 +153,9 @@ const QuizModal = ({ tool, isOpen, onClose, onComplete }: QuizModalProps) => {
             <Button
               onClick={handleNext}
               disabled={!canProceed}
-              className="btn-medical flex items-center space-x-2"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center space-x-2"
             >
-              <span>{isLastQuestion ? "Complete" : "Next"}</span>
+              <span>{isLastQuestion ? "Complete Assessment" : "Next"}</span>
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
