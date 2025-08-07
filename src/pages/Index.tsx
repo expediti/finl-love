@@ -29,9 +29,9 @@ const Index = () => {
 const handleStartTool = (toolId: string) => {
   const tool = healthTools.find(t => t.id === toolId);
   if (tool) {
-    // Special handling for diabetes - open in new window
+    // Special handling for diabetes - open in new window using existing ToolPage
     if (toolId === 'diabetes-checker') {
-      window.open('/diabetes', '_blank');
+      window.open('/diabetes-checker', '_blank');
     } else {
       // All other tools use modal system
       setSelectedTool(tool);
@@ -39,6 +39,7 @@ const handleStartTool = (toolId: string) => {
     }
   }
 };
+
 
 
 
