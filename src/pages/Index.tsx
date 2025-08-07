@@ -28,26 +28,12 @@ const Index = () => {
 
 const handleStartTool = (toolId: string) => {
   const tool = healthTools.find(t => t.id === toolId);
-  
-  // Debug: Check what tool IDs exist
-  console.log("Looking for tool ID:", toolId);
-  console.log("Available tool IDs:", healthTools.map(t => t.id));
-  
   if (tool) {
-    if (toolId === 'diabetes-checker') {
-      window.open('/diabetes-checker', '_blank');
-    } else {
-      setSelectedTool(tool);
-      setShowQuiz(true);
-    }
-  } else {
-    console.error("Tool not found for ID:", toolId);
+    // Keep all tools in modal system (including diabetes)
+    setSelectedTool(tool);
+    setShowQuiz(true);
   }
 };
-
-
-
-
 
   const handleQuizComplete = (score: number, answers: Record<string, string>) => {
     setQuizScore(score);
