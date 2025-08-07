@@ -26,14 +26,14 @@ const Index = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Updated function to open tools in new windows
-  const handleStartTool = (toolId: string) => {
-    const tool = healthTools.find(t => t.id === toolId);
-    if (tool) {
-      // Open tool in new window using tool ID as URL
-      window.open(`/${toolId}`, '_blank');
-    }
-  };
+const handleStartTool = (toolId: string) => {
+  const tool = healthTools.find(t => t.id === toolId);
+  if (tool) {
+    setSelectedTool(tool);
+    setShowQuiz(true);
+  }
+};
+
 
   const handleQuizComplete = (score: number, answers: Record<string, string>) => {
     setQuizScore(score);
