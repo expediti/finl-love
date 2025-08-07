@@ -9,7 +9,6 @@ import Blog from "./pages/Blog";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import ToolPage from "./pages/ToolPage";
-import DiabetesPage from "./pages/DiabetesPage";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +23,23 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/about" element={<About />} />
-            <Route path="/diabetes" element={<DiabetesPage />} />
+            {/* Tool routes - specific routes first */}
+            <Route path="/diabetes-checker" element={<ToolPage />} />
+            <Route path="/pcos-checker" element={<ToolPage />} />
+            <Route path="/asthma-checker" element={<ToolPage />} />
+            <Route path="/depression-checker" element={<ToolPage />} />
+            <Route path="/anxiety-checker" element={<ToolPage />} />
+            <Route path="/anemia-checker" element={<ToolPage />} />
+            <Route path="/ibs-checker" element={<ToolPage />} />
+            <Route path="/covid-checker" element={<ToolPage />} />
+            <Route path="/food-poisoning-checker" element={<ToolPage />} />
+            <Route path="/gastroenteritis-checker" element={<ToolPage />} />
+            <Route path="/heart-disease-checker" element={<ToolPage />} />
+            <Route path="/heart-attack-checker" element={<ToolPage />} />
+            <Route path="/arthritis-checker" element={<ToolPage />} />
+            <Route path="/dizziness-checker" element={<ToolPage />} />
+            <Route path="/uti-checker" element={<ToolPage />} />
+            {/* Generic catch-all route for any other tools */}
             <Route path="/:toolSlug" element={<ToolPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
