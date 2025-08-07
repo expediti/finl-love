@@ -26,14 +26,14 @@ const Index = () => {
     return matchesSearch && matchesCategory;
   });
 
-const handleStartTool = (toolId: string) => {
-  const tool = healthTools.find(t => t.id === toolId);
-  if (tool) {
-    // Keep all tools in modal system (including diabetes)
-    setSelectedTool(tool);
-    setShowQuiz(true);
-  }
-};
+  // Updated function to open tools in new windows
+  const handleStartTool = (toolId: string) => {
+    const tool = healthTools.find(t => t.id === toolId);
+    if (tool) {
+      // Open tool in new window using tool ID as URL
+      window.open(`/${toolId}`, '_blank');
+    }
+  };
 
   const handleQuizComplete = (score: number, answers: Record<string, string>) => {
     setQuizScore(score);
@@ -64,7 +64,6 @@ const handleStartTool = (toolId: string) => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-
       {/* Stats Section */}
       <section className="py-16 bg-card/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -157,7 +156,7 @@ const handleStartTool = (toolId: string) => {
         </div>
       </section>
 
-      {/* Modals */}
+      {/* Modals - Only for fallback use */}
       {selectedTool && showQuiz && (
         <QuizModal
           tool={selectedTool}
