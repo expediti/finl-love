@@ -41,6 +41,7 @@ const handleStartTool = (toolId: string) => {
 };
 
 
+
   const handleQuizComplete = (score: number, answers: Record<string, string>) => {
     setQuizScore(score);
     setQuizAnswers(answers);
