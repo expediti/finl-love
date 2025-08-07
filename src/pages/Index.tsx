@@ -27,21 +27,24 @@ const Index = () => {
   });
 
 const handleStartTool = (toolId: string) => {
-  console.log("=== DEBUG INFO ===");
-  console.log("Tool ID being used:", toolId);
-  console.log("All available tool IDs:", healthTools.map(t => t.id));
-  
   const tool = healthTools.find(t => t.id === toolId);
+  
+  // Debug: Check what tool IDs exist
+  console.log("Looking for tool ID:", toolId);
+  console.log("Available tool IDs:", healthTools.map(t => t.id));
+  
   if (tool) {
     if (toolId === 'diabetes-checker') {
-      console.log("Opening URL: /diabetes-checker");
       window.open('/diabetes-checker', '_blank');
     } else {
       setSelectedTool(tool);
       setShowQuiz(true);
     }
+  } else {
+    console.error("Tool not found for ID:", toolId);
   }
 };
+
 
 
 
