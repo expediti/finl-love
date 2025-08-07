@@ -26,13 +26,20 @@ const Index = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const handleStartTool = (toolId: string) => {
-    const tool = healthTools.find(t => t.id === toolId);
-    if (tool) {
+const handleStartTool = (toolId: string) => {
+  const tool = healthTools.find(t => t.id === toolId);
+  if (tool) {
+    // Special handling for diabetes - open in new window
+    if (toolId === 'diabetes-checker') {
+      window.open('/diabetes', '_blank');
+    } else {
+      // All other tools use modal system
       setSelectedTool(tool);
       setShowQuiz(true);
     }
-  };
+  }
+};
+
 
   const handleQuizComplete = (score: number, answers: Record<string, string>) => {
     setQuizScore(score);
