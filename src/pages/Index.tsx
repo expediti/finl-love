@@ -27,13 +27,16 @@ const Index = () => {
   });
 
 const handleStartTool = (toolId: string) => {
+  console.log("=== DEBUG INFO ===");
+  console.log("Tool ID being used:", toolId);
+  console.log("All available tool IDs:", healthTools.map(t => t.id));
+  
   const tool = healthTools.find(t => t.id === toolId);
   if (tool) {
-    // Special handling for diabetes - open in new window using existing ToolPage
     if (toolId === 'diabetes-checker') {
+      console.log("Opening URL: /diabetes-checker");
       window.open('/diabetes-checker', '_blank');
     } else {
-      // All other tools use modal system
       setSelectedTool(tool);
       setShowQuiz(true);
     }
