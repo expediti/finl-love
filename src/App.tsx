@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import About from "./pages/About";
@@ -18,12 +18,11 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <HashRouter>
+        <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/about" element={<About />} />
-            {/* Tool routes - specific routes first */}
             <Route path="/diabetes-checker" element={<ToolPage />} />
             <Route path="/pcos-checker" element={<ToolPage />} />
             <Route path="/asthma-checker" element={<ToolPage />} />
@@ -39,11 +38,10 @@ const App = () => (
             <Route path="/arthritis-checker" element={<ToolPage />} />
             <Route path="/dizziness-checker" element={<ToolPage />} />
             <Route path="/uti-checker" element={<ToolPage />} />
-            {/* Generic catch-all route for any other tools */}
             <Route path="/:toolSlug" element={<ToolPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </HashRouter>
+        </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
