@@ -132,48 +132,333 @@ html {
   overflow: hidden;
 }
 
-/* Print Styles - We'll fix these properly later */
+/* Print-only elements */
+.print-only {
+  display: none !important;
+}
+
+/* PROFESSIONAL PRINT STYLES */
 @media print {
-  /* Hide navigation and non-essential elements */
-  nav,
+  /* Page setup */
+  @page {
+    size: A4;
+    margin: 0.75in;
+    color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Show print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Hide non-print elements */
   .no-print,
-  button:not(.print-button) {
+  nav,
+  button:not(.print-button),
+  .btn,
+  .button {
     display: none !important;
   }
-  
-  /* Ensure proper page layout */
+
+  /* Reset body styles for print */
   body {
-    font-size: 12pt;
-    line-height: 1.4;
-    color: black !important;
-    background: white !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    color: #000 !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
-  
-  /* Card styles for print */
-  .card {
-    border: 1px solid #000 !important;
-    background: white !important;
-    box-shadow: none !important;
-    page-break-inside: avoid;
-    margin-bottom: 1rem;
-  }
-  
-  /* Text adjustments */
-  h1, h2, h3, h4, h5, h6 {
-    color: black !important;
+
+  /* Print Header */
+  .print-header {
+    margin-bottom: 20pt;
+    padding-bottom: 15pt;
+    border-bottom: 2pt solid #000;
     page-break-after: avoid;
   }
-  
+
+  .print-logo-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10pt;
+  }
+
+  .print-logo {
+    display: flex;
+    align-items: center;
+    gap: 10pt;
+  }
+
+  .logo-icon {
+    font-size: 24pt;
+    background: #3B82F6;
+    color: white;
+    width: 40pt;
+    height: 40pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8pt;
+  }
+
+  .logo-text h1 {
+    font-size: 20pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .logo-text p {
+    font-size: 10pt !important;
+    color: #666 !important;
+    margin: 0;
+  }
+
+  .print-date {
+    font-size: 9pt !important;
+    color: #666 !important;
+    text-align: right;
+  }
+
+  .print-title h2 {
+    font-size: 16pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin: 5pt 0 0 0;
+  }
+
+  .print-url {
+    font-size: 8pt !important;
+    color: #666 !important;
+    font-style: italic;
+  }
+
+  /* Card styles for print */
+  .print-card {
+    border: 1.5pt solid #000 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    margin-bottom: 15pt !important;
+    page-break-inside: avoid;
+    border-radius: 0 !important;
+  }
+
+  .print-content {
+    padding: 12pt !important;
+  }
+
+  .print-header-section {
+    text-align: center;
+    padding: 15pt 12pt 12pt 12pt !important;
+    border-bottom: 1pt solid #ddd;
+  }
+
+  .print-title {
+    font-size: 16pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin-bottom: 8pt !important;
+  }
+
+  .print-subtitle {
+    font-size: 10pt !important;
+    color: #666 !important;
+    margin: 0 !important;
+  }
+
+  /* Risk Level Badge */
+  .print-risk-badge {
+    display: inline-flex !important;
+    align-items: center;
+    padding: 8pt 16pt !important;
+    border-radius: 20pt !important;
+    font-size: 12pt !important;
+    font-weight: bold !important;
+    margin-bottom: 12pt !important;
+  }
+
+  .print-risk-badge.high-risk {
+    background: #FEE2E2 !important;
+    color: #DC2626 !important;
+    border: 1pt solid #DC2626 !important;
+  }
+
+  .print-risk-badge.medium-risk {
+    background: #FEF3C7 !important;
+    color: #D97706 !important;
+    border: 1pt solid #D97706 !important;
+  }
+
+  .print-risk-badge.low-risk {
+    background: #DCFCE7 !important;
+    color: #16A34A !important;
+    border: 1pt solid #16A34A !important;
+  }
+
+  /* Score display */
+  .print-score {
+    font-size: 24pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin-bottom: 4pt !important;
+  }
+
+  .print-score-label {
+    font-size: 10pt !important;
+    color: #666 !important;
+    margin: 0 !important;
+  }
+
+  /* Progress bar */
+  .print-progress-container {
+    width: 100%;
+    height: 8pt;
+    background: #E5E7EB !important;
+    border: 1pt solid #000;
+    margin-bottom: 15pt;
+  }
+
+  .print-progress-bar {
+    height: 6pt;
+    margin: 1pt;
+  }
+
+  .print-progress-high {
+    background: #DC2626 !important;
+  }
+
+  .print-progress-medium {
+    background: #D97706 !important;
+  }
+
+  .print-progress-low {
+    background: #16A34A !important;
+  }
+
+  /* Recommendations */
+  .print-recommendations-title {
+    font-size: 14pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin-bottom: 12pt !important;
+    padding-bottom: 8pt;
+    border-bottom: 1pt solid #ddd;
+  }
+
+  .print-recommendations-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .print-recommendation-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8pt;
+    page-break-inside: avoid;
+  }
+
+  .print-bullet {
+    width: 4pt;
+    height: 4pt;
+    background: #3B82F6 !important;
+    border-radius: 50%;
+    margin-top: 4pt;
+    margin-right: 8pt;
+    flex-shrink: 0;
+  }
+
+  .print-recommendation-text {
+    font-size: 10pt !important;
+    color: #000 !important;
+    line-height: 1.4;
+  }
+
+  /* Disclaimer */
+  .print-disclaimer {
+    background: #F9FAFB !important;
+    border: 1pt solid #D1D5DB !important;
+    margin-top: 20pt;
+  }
+
+  .print-disclaimer-text {
+    font-size: 9pt !important;
+    color: #374151 !important;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* Print Footer */
+  .print-footer {
+    position: fixed;
+    bottom: 0.5in;
+    left: 0.75in;
+    right: 0.75in;
+    padding-top: 10pt;
+    border-top: 1pt solid #000;
+    font-size: 8pt;
+    color: #666;
+  }
+
+  .print-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .footer-left p,
+  .footer-right p {
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .footer-right {
+    text-align: right;
+  }
+
+  /* Section spacing */
+  .print-section {
+    margin-bottom: 15pt;
+    page-break-inside: avoid;
+  }
+
+  /* Text improvements */
+  h1, h2, h3, h4, h5, h6 {
+    color: #000 !important;
+    page-break-after: avoid;
+    margin-bottom: 8pt;
+  }
+
   p {
-    orphans: 3;
-    widows: 3;
+    orphans: 2;
+    widows: 2;
+    color: #000 !important;
   }
-  
-  /* Progress bars and badges */
-  .progress-bar,
-  .badge {
-    border: 1px solid #000 !important;
-    background: white !important;
-    color: black !important;
+
+  /* SVG icons in print */
+  svg {
+    color: #000 !important;
+    fill: currentColor !important;
   }
+
+  /* Remove shadows and hover effects */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Print mode specific styles (applied via JavaScript) */
+.print-mode .no-print {
+  display: none !important;
+}
+
+.print-mode .print-only {
+  display: block !important;
 }
