@@ -21,8 +21,8 @@ const Index = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Navigate to individual tool pages
   const handleStartTool = (toolId: string) => {
+    console.log("Navigating to tool:", toolId);
     navigate(`/${toolId}`);
   };
 
