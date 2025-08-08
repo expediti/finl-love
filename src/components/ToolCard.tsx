@@ -23,6 +23,12 @@ const ToolCard = ({
   estimatedTime,
   onStartTool,
 }: ToolCardProps) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    console.log("Button clicked for tool:", id);
+    onStartTool(id);
+  };
+
   const getDifficultyColor = (level: string) => {
     switch (level) {
       case "Easy":
@@ -67,8 +73,9 @@ const ToolCard = ({
         </div>
         
         <Button 
-          onClick={() => onStartTool(id)}
+          onClick={handleClick}
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground group-hover:shadow-md transition-all duration-300"
+          type="button"
         >
           Start Assessment
           <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
