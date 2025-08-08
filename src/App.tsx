@@ -23,12 +23,14 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/about" element={<About />} />
+            
+            {/* Individual routes for each health tool */}
+            <Route path="/anemia-checker" element={<ToolPage />} />
             <Route path="/diabetes-checker" element={<ToolPage />} />
             <Route path="/pcos-checker" element={<ToolPage />} />
             <Route path="/asthma-checker" element={<ToolPage />} />
             <Route path="/depression-checker" element={<ToolPage />} />
             <Route path="/anxiety-checker" element={<ToolPage />} />
-            <Route path="/anemia-checker" element={<ToolPage />} />
             <Route path="/ibs-checker" element={<ToolPage />} />
             <Route path="/covid-checker" element={<ToolPage />} />
             <Route path="/food-poisoning-checker" element={<ToolPage />} />
@@ -38,6 +40,8 @@ const App = () => (
             <Route path="/arthritis-checker" element={<ToolPage />} />
             <Route path="/dizziness-checker" element={<ToolPage />} />
             <Route path="/uti-checker" element={<ToolPage />} />
+            
+            {/* Fallback route for any other tool slugs */}
             <Route path="/:toolSlug" element={<ToolPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
