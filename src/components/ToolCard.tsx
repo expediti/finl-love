@@ -1,4 +1,4 @@
-import { Clock, ArrowRight } from "lucide-react";
+import { Clock, ArrowRight, Heart, Brain, Activity, Lungs, Stomach, Shield, Thermometer, Bone, Zap, Droplets } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,6 +21,7 @@ const ToolCard = ({
   category,
   difficulty,
   estimatedTime,
+  icon,
   onStartTool,
 }: ToolCardProps) => {
   const handleClick = (e: React.MouseEvent) => {
@@ -42,12 +43,66 @@ const ToolCard = ({
     }
   };
 
+  const getIconComponent = (toolId: string, category: string) => {
+    // First check by specific tool ID
+    switch (toolId) {
+      case "heart-disease-checker":
+      case "heart-attack-checker":
+        return <Heart className="w-6 h-6 text-red-500" />;
+      case "anxiety-checker":
+      case "depression-checker":
+        return <Brain className="w-6 h-6 text-purple-500" />;
+      case "diabetes-checker":
+        return <Activity className="w-6 h-6 text-blue-500" />;
+      case "asthma-checker":
+        return <Lungs className="w-6 h-6 text-cyan-500" />;
+      case "ibs-checker":
+      case "food-poisoning-checker":
+      case "gastroenteritis-checker":
+        return <Stomach className="w-6 h-6 text-orange-500" />;
+      case "covid-checker":
+        return <Shield className="w-6 h-6 text-red-600" />;
+      case "anemia-checker":
+        return <Droplets className="w-6 h-6 text-red-400" />;
+      case "pcos-checker":
+        return <Heart className="w-6 h-6 text-pink-500" />;
+      case "arthritis-checker":
+        return <Bone className="w-6 h-6 text-yellow-600" />;
+      case "dizziness-checker":
+        return <Zap className="w-6 h-6 text-purple-400" />;
+      case "uti-checker":
+        return <Droplets className="w-6 h-6 text-blue-400" />;
+      default:
+        // Fallback to category-based icons
+        switch (category) {
+          case "Heart Health":
+            return <Heart className="w-6 h-6 text-red-500" />;
+          case "Mental Health":
+            return <Brain className="w-6 h-6 text-purple-500" />;
+          case "Respiratory":
+            return <Lungs className="w-6 h-6 text-cyan-500" />;
+          case "Digestive":
+            return <Stomach className="w-6 h-6 text-orange-500" />;
+          case "Metabolic Health":
+            return <Activity className="w-6 h-6 text-blue-500" />;
+          case "Infectious Disease":
+            return <Shield className="w-6 h-6 text-red-600" />;
+          case "Women's Health":
+            return <Heart className="w-6 h-6 text-pink-500" />;
+          case "Neurological":
+            return <Zap className="w-6 h-6 text-purple-400" />;
+          default:
+            return <Activity className="w-6 h-6 text-gray-500" />;
+        }
+    }
+  };
+
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 bg-card hover:bg-card/80">
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">
-            <div className="w-6 h-6 rounded bg-primary/80" />
+          <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-primary/10">
+            {getIconComponent(id, category)}
           </div>
           <Badge variant="outline" className={getDifficultyColor(difficulty)}>
             {difficulty}
@@ -58,7 +113,7 @@ const ToolCard = ({
           {title}
         </h3>
         
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
           {description}
         </p>
         
