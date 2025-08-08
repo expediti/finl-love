@@ -4,20 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ToolCard from "@/components/ToolCard";
-import QuizModal from "@/components/QuizModal";
-import ResultsModal from "@/components/ResultsModal";
 import { healthTools, categories, HealthTool } from "@/data/tools";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedTool, setSelectedTool] = useState<HealthTool | null>(null);
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [quizScore, setQuizScore] = useState(0);
-  const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
+  const navigate = useNavigate();
 
   const filteredTools = healthTools.filter((tool) => {
     const matchesSearch = tool.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -26,32 +21,9 @@ const Index = () => {
     return matchesSearch && matchesCategory;
   });
 
-const handleStartTool = (toolId: string) => {
-  const tool = healthTools.find(t => t.id === toolId);
-  if (tool) {
-    setSelectedTool(tool);
-    setShowQuiz(true);
-  }
-};
-
-
-  const handleQuizComplete = (score: number, answers: Record<string, string>) => {
-    setQuizScore(score);
-    setQuizAnswers(answers);
-    setShowQuiz(false);
-    setShowResults(true);
-  };
-
-  const handleCloseResults = () => {
-    setShowResults(false);
-    setSelectedTool(null);
-    setQuizScore(0);
-    setQuizAnswers({});
-  };
-
-  const handleCloseQuiz = () => {
-    setShowQuiz(false);
-    setSelectedTool(null);
+  // Navigate to individual tool pages
+  const handleStartTool = (toolId: string) => {
+    navigate(`/${toolId}`);
   };
 
   const stats = [
@@ -64,6 +36,28 @@ const handleStartTool = (toolId: string) => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 via-secondary/5 to-background">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-fade-in">
+              Your Health, Our Priority
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 animate-fade-in-delay">
+              Get instant, accurate health assessments with our AI-powered symptom checkers and diagnostic tools
+            </p>
+            <Button 
+              size="lg" 
+              className="btn-hero text-lg px-8 py-6"
+              onClick={() => document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Start Assessment
+              <ChevronRight className="w-5 h-5 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section className="py-16 bg-card/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,24 +149,6 @@ const handleStartTool = (toolId: string) => {
           </Button>
         </div>
       </section>
-
-      {/* Modals - Only for fallback use */}
-      {selectedTool && showQuiz && (
-        <QuizModal
-          tool={selectedTool}
-          onComplete={handleQuizComplete}
-          onClose={handleCloseQuiz}
-        />
-      )}
-
-      {selectedTool && showResults && (
-        <ResultsModal
-          tool={selectedTool}
-          score={quizScore}
-          answers={quizAnswers}
-          onClose={handleCloseResults}
-        />
-      )}
     </div>
   );
 };
