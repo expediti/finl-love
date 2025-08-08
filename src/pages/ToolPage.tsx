@@ -94,9 +94,9 @@ const ToolPage = () => {
 
   const getRiskLevel = (score: number, maxScore: number) => {
     const percentage = (score / maxScore) * 100;
-    if (percentage >= 70) return { level: "High", color: "text-red-600", bgColor: "bg-red-100" };
-    if (percentage >= 40) return { level: "Medium", color: "text-yellow-600", bgColor: "bg-yellow-100" };
-    return { level: "Low", color: "text-green-600", bgColor: "bg-green-100" };
+    if (percentage >= 70) return { level: "High", color: "text-red-600", bgColor: "bg-red-100", printColor: "high-risk" };
+    if (percentage >= 40) return { level: "Medium", color: "text-yellow-600", bgColor: "bg-yellow-100", printColor: "medium-risk" };
+    return { level: "Low", color: "text-green-600", bgColor: "bg-green-100", printColor: "low-risk" };
   };
 
   const getRecommendations = (riskLevel: string) => {
@@ -125,6 +125,28 @@ const ToolPage = () => {
       default:
         return [];
     }
+  };
+
+  const handlePrint = () => {
+    // Add print-ready class to body
+    document.body.classList.add('print-mode');
+    
+    // Hide non-printable elements
+    const nonPrintElements = document.querySelectorAll('.no-print');
+    nonPrintElements.forEach(el => {
+      (el as HTMLElement).style.display = 'none';
+    });
+    
+    // Trigger print
+    window.print();
+    
+    // Restore after print
+    setTimeout(() => {
+      document.body.classList.remove('print-mode');
+      nonPrintElements.forEach(el => {
+        (el as HTMLElement).style.display = '';
+      });
+    }, 100);
   };
 
   if (!tool) {
@@ -157,11 +179,33 @@ const ToolPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      {/* Print Header - Only visible when printing */}
+      <div className="print-header print-only">
+        <div className="print-logo-section">
+          <div className="print-logo">
+            <div className="logo-icon">🏥</div>
+            <div className="logo-text">
+              <h1>FitScan</h1>
+              <p>Health Assessment Platform</p>
+            </div>
+          </div>
+          <div className="print-date">
+            {new Date().toLocaleDateString()} - {new Date().toLocaleTimeString()}
+          </div>
+        </div>
+        <div className="print-title">
+          <h2>{tool.title} - Assessment Report</h2>
+          <div className="print-url">Generated from: {window.location.href}</div>
+        </div>
+      </div>
+
+      <div className="no-print">
+        <Navigation />
+      </div>
       
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-8 no-print">
           <Button 
             onClick={() => navigate('/')} 
             variant="ghost" 
@@ -183,7 +227,7 @@ const ToolPage = () => {
         </div>
 
         {!showResults ? (
-          <Card>
+          <Card className="no-print">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>
@@ -237,67 +281,73 @@ const ToolPage = () => {
         ) : (
           <div className="space-y-6">
             {/* Results Header */}
-            <Card>
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl mb-2">Assessment Results</CardTitle>
-                <p className="text-muted-foreground">
-                  Based on your answers, here's your health assessment
-                </p>
-              </CardHeader>
-            </Card>
+            <div className="print-section">
+              <Card className="print-card">
+                <CardHeader className="text-center print-header-section">
+                  <CardTitle className="text-2xl mb-2 print-title">Assessment Results</CardTitle>
+                  <p className="text-muted-foreground print-subtitle">
+                    Based on your answers, here's your health assessment
+                  </p>
+                </CardHeader>
+              </Card>
+            </div>
 
             {/* Risk Level Card */}
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-center mb-6">
-                  <div className={`inline-flex items-center px-4 py-2 rounded-full ${riskData.bgColor} ${riskData.color} text-lg font-semibold mb-4`}>
-                    {riskData.level === "High" && <AlertTriangle className="w-5 h-5 mr-2" />}
-                    {riskData.level === "Medium" && <Info className="w-5 h-5 mr-2" />}
-                    {riskData.level === "Low" && <CheckCircle className="w-5 h-5 mr-2" />}
-                    {riskData.level} Risk Level
+            <div className="print-section">
+              <Card className="print-card">
+                <CardContent className="p-6 print-content">
+                  <div className="text-center mb-6">
+                    <div className={`inline-flex items-center px-4 py-2 rounded-full ${riskData.bgColor} ${riskData.color} text-lg font-semibold mb-4 print-risk-badge ${riskData.printColor}`}>
+                      {riskData.level === "High" && <AlertTriangle className="w-5 h-5 mr-2" />}
+                      {riskData.level === "Medium" && <Info className="w-5 h-5 mr-2" />}
+                      {riskData.level === "Low" && <CheckCircle className="w-5 h-5 mr-2" />}
+                      {riskData.level} Risk Level
+                    </div>
+                    <p className="text-3xl font-bold mb-2 print-score">{score}/{maxScore}</p>
+                    <p className="text-muted-foreground print-score-label">Risk Score</p>
                   </div>
-                  <p className="text-3xl font-bold mb-2">{score}/{maxScore}</p>
-                  <p className="text-muted-foreground">Risk Score</p>
-                </div>
 
-                <div className="w-full bg-gray-200 rounded-full h-3 mb-6">
-                  <div 
-                    className={`h-3 rounded-full transition-all duration-1000 ${
-                      riskData.level === "High" ? "bg-red-500" :
-                      riskData.level === "Medium" ? "bg-yellow-500" : "bg-green-500"
-                    }`}
-                    style={{ width: `${(score / maxScore) * 100}%` }}
-                  ></div>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="w-full bg-gray-200 rounded-full h-3 mb-6 print-progress-container">
+                    <div 
+                      className={`h-3 rounded-full transition-all duration-1000 print-progress-bar ${
+                        riskData.level === "High" ? "bg-red-500 print-progress-high" :
+                        riskData.level === "Medium" ? "bg-yellow-500 print-progress-medium" : "bg-green-500 print-progress-low"
+                      }`}
+                      style={{ width: `${(score / maxScore) * 100}%` }}
+                    ></div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Recommendations */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Heart className="w-5 h-5 mr-2 text-red-500" />
-                  Recommendations
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {getRecommendations(riskData.level).map((rec, index) => (
-                    <li key={index} className="flex items-start">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <span>{rec}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            <div className="print-section">
+              <Card className="print-card">
+                <CardHeader>
+                  <CardTitle className="flex items-center print-recommendations-title">
+                    <Heart className="w-5 h-5 mr-2 text-red-500" />
+                    Recommendations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="print-content">
+                  <ul className="space-y-3 print-recommendations-list">
+                    {getRecommendations(riskData.level).map((rec, index) => (
+                      <li key={index} className="flex items-start print-recommendation-item">
+                        <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0 print-bullet"></div>
+                        <span className="print-recommendation-text">{rec}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 no-print">
               <Button onClick={resetQuiz} variant="outline" className="flex-1">
                 Retake Assessment
               </Button>
-              <Button onClick={() => window.print()} variant="outline" className="flex-1">
+              <Button onClick={handlePrint} variant="outline" className="flex-1">
                 <Printer className="w-4 h-4 mr-2" />
                 Print Results
               </Button>
@@ -308,14 +358,30 @@ const ToolPage = () => {
             </div>
 
             {/* Disclaimer */}
-            <Card className="bg-muted/30">
-              <CardContent className="p-4">
-                <p className="text-sm text-muted-foreground text-center">
-                  <strong>Disclaimer:</strong> This assessment is for informational purposes only and should not replace professional medical advice. 
-                  Always consult with a qualified healthcare provider for proper diagnosis and treatment.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="print-section">
+              <Card className="bg-muted/30 print-card print-disclaimer">
+                <CardContent className="p-4 print-content">
+                  <p className="text-sm text-muted-foreground text-center print-disclaimer-text">
+                    <strong>Disclaimer:</strong> This assessment is for informational purposes only and should not replace professional medical advice. 
+                    Always consult with a qualified healthcare provider for proper diagnosis and treatment.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Print Footer */}
+            <div className="print-footer print-only">
+              <div className="print-footer-content">
+                <div className="footer-left">
+                  <p>© 2025 FitScan Health Assessment Platform</p>
+                  <p>Visit us at: {window.location.origin}</p>
+                </div>
+                <div className="footer-right">
+                  <p>Generated on: {new Date().toLocaleString()}</p>
+                  <p>Page 1 of 1</p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
